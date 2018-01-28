@@ -6,6 +6,7 @@ import {
     takeEvery,
     takeLatest,
 } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import {
     FETCH_START,
     FETCH_END,
@@ -15,8 +16,12 @@ import {
 
 const crudFetch = restClient => {
     function* handleFetch(action) {
-        const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
+
+        const { type, payload, meta: { fetch: fetchMeta, cancelPrevious, ...meta } } = action;
         const restType = fetchMeta;
+        if (cancelPrevious) {
+            yield call(delay, 500);
+        }
 
         yield all([
             put({ type: `${type}_LOADING`, payload, meta }),
