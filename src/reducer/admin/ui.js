@@ -2,11 +2,13 @@ import {
     TOGGLE_SIDEBAR,
     SET_SIDEBAR_VISIBILITY,
     REFRESH_VIEW,
+    SET_THEME,
 } from '../../actions';
 
 const defaultState = {
     sidebarOpen: false,
     viewVersion: 0,
+    theme: null,
 };
 
 export default (previousState = defaultState, { type, payload }) => {
@@ -23,6 +25,11 @@ export default (previousState = defaultState, { type, payload }) => {
                 ...previousState,
                 viewVersion: previousState.viewVersion + 1,
             };
+        case SET_THEME:
+            return {
+                ...previousState,
+                theme: payload
+            }
         default:
             return previousState;
     }

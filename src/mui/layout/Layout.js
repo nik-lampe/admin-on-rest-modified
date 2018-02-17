@@ -73,11 +73,12 @@ class Layout extends Component {
             menu,
             catchAll,
             theme,
+            connectedTheme,
             title,
             width,
         } = this.props;
 
-        const muiTheme = getMuiTheme(theme);
+        const muiTheme = getMuiTheme(connectedTheme || theme);
         if (!prefixedStyles.main) {
             // do this once because user agent never changes
             const prefix = autoprefixer(muiTheme);
@@ -174,6 +175,7 @@ Layout.defaultProps = {
 function mapStateToProps(state) {
     return {
         isLoading: state.admin.loading > 0,
+        connectedTheme: state.admin.ui.theme
     };
 }
 
