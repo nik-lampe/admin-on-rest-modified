@@ -40,10 +40,11 @@ Admin-on-rest ships 2 REST client by default:
 
 You can find REST clients for various backends in third-party repositories:
 
+* **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
-* **[GraphQL](http://graphql.org/)**: [marmelab/aor-simple-graphql-client](https://github.com/marmelab/aor-simple-graphql-client) (uses [Apollo](http://www.apollodata.com/))
+* **[GraphQL](http://graphql.org/)**: [marmelab/aor-graphql](https://github.com/marmelab/aor-graphql) (uses [Apollo](http://www.apollodata.com/))
 * **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)
 * Local JSON: [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client). It doesn't even use HTTP. Use it for testing purposes.
 * **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)
@@ -198,7 +199,7 @@ Instead of writing your own REST client or using a third-party one, you can enha
  */
 const convertFileToBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file.rawFile);
 
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
@@ -212,8 +213,8 @@ const addUploadCapabilities = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
-            const formerPictures = params.data.pictures.filter(p => !(p instanceof File));
-            const newPictures = params.data.pictures.filter(p => p instanceof File);
+            const formerPictures = params.data.pictures.filter(p => !(p.rawFile instanceof File));
+            const newPictures = params.data.pictures.filter(p => p.rawFile instanceof File);
 
             return Promise.all(newPictures.map(convertFileToBase64))
                 .then(base64Pictures => base64Pictures.map(picture64 => ({

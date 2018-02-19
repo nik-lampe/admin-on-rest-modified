@@ -30,7 +30,7 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.md#validation))
+* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
@@ -286,13 +286,50 @@ You can override any of Material UI's `<DatePicker>` attributes by setting the `
     hintText: 'Choisissez une date',
     DateTimeFormat,
     okLabel: 'OK',
-    cancelLabel: 'Annuler'
+    cancelLabel: 'Annuler',
     locale: 'fr'
 }} />
 ```
 {% endraw %}
 
 Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/components/date-picker) for more details.
+
+#### `<DateInput>` and time zone
+The `<DateInput>` component will *transmit* the input's value to redux-form with `toISOString()` method. This method takes into account the **user's time zone**.
+
+That's means that if a user with a local time UTC+2 selects `2017-10-31` in the datePicker, the value transmitted to the redux-form will be `2017-10-30T22:00:00.000Z`.
+
+It's not a problem if you manage this date as a `dateTime` (with timezone) but if you store this date as *simple* `date`, you could save `2017-10-30` without reference to the user time zone...
+
+You can fix that type of problem using a <a href="#transforming-input-value-tofrom-record">`parser` function</a> :
+```jsx
+const _tz_offset = new Date().getTimezoneOffset() / 60;
+export const dateParser = v => {
+  const regexp = /(\d{4})-(\d{2})-(\d{2})/
+  var match = regexp.exec(v);
+  if (match === null) return;
+  
+  var year = match[1];
+  var month = match[2];
+  var day = match[3];
+
+  if (_tz_offset < 0) {
+    // negative offset means our picked UTC date got converted to previous day
+    var date = new Date(v);
+    date.setDate(date.getDate() + 1);
+    match = regexp.exec(date.toISOString())
+    year = match[1];
+    month = match[2];
+    day = match[3];
+  }
+  const d = [year, month, day].join("-");
+  return d;
+};
+
+...
+
+<DateInput parse={dateParser} source="date_start" label="Start date" />
+```
 
 ## `<DisabledInput>`
 
@@ -543,7 +580,8 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest'
 </Admin>
 ```
 
-Set the `allowEmpty` prop when the empty value is allowed.
+Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'admin-on-rest'
@@ -658,7 +696,8 @@ import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'
 </Admin>
 ```
 
-Set the `allowEmpty` prop when the empty value is allowed.
+Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```js
 import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'

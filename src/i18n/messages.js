@@ -27,6 +27,9 @@ export default {
             not_found: 'Not Found',
         },
         input: {
+            autocomplete: {
+                none: 'None',
+            },
             file: {
                 upload_several:
                     'Drop some files to upload, or click to select one.',
@@ -37,6 +40,13 @@ export default {
                     'Drop some pictures to upload, or click to select one.',
                 upload_single:
                     'Drop a picture to upload, or click to select it.',
+            },
+            references: {
+                all_missing: 'Unable to find references data.',
+                many_missing:
+                    'At least one of the associated references no longer appears to be available.',
+                single_missing:
+                    'Associated reference no longer appears to be available',
             },
         },
         message: {
@@ -49,6 +59,8 @@ export default {
         },
         navigation: {
             no_results: 'No results found',
+            no_more_results:
+                'The page number %{page} is out of boundaries. Try the previous page.',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',
             page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',
@@ -69,6 +81,7 @@ export default {
             deleted: 'Element deleted',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
+            bad_item: 'Incorrect element',
         },
         validation: {
             required: 'Required',

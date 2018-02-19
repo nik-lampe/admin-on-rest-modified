@@ -5,6 +5,7 @@ import {
     CheckboxGroupInput,
     ChipField,
     Create,
+    CreateButton,
     Datagrid,
     DateField,
     DateInput,
@@ -22,6 +23,7 @@ import {
     ReferenceArrayField,
     ReferenceManyField,
     ReferenceArrayInput,
+    RefreshButton,
     Responsive,
     RichTextField,
     SaveButton,
@@ -44,17 +46,18 @@ import {
     required,
     translate,
 } from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
+import { CardActions } from 'material-ui/Card';
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
+import BookIcon from 'material-ui/svg-icons/action/book'; // eslint-disable-line import/no-unresolved
 
-import BookIcon from 'material-ui/svg-icons/action/book';
 export const PostIcon = BookIcon;
 
 const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>
 ));
 
-const PostFilter = ({ ...props }) => (
+const PostFilter = props => (
     <Filter {...props}>
         <TextInput label="post.list.search" source="q" alwaysOn />
         <TextInput
@@ -78,9 +81,39 @@ const titleFieldStyle = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 };
-export const PostList = ({ ...props }) => (
+
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const PostActions = ({
+    resource,
+    filters,
+    displayedFilters,
+    filterValues,
+    basePath,
+    showFilter,
+}) => (
+    <CardActions style={cardActionStyle}>
+        {filters &&
+            React.cloneElement(filters, {
+                resource,
+                showFilter,
+                displayedFilters,
+                filterValues,
+                context: 'button',
+            })}
+        <CreateButton basePath={basePath} />
+        <RefreshButton />
+    </CardActions>
+);
+
+export const PostList = props => (
     <List
         {...props}
+        actions={<PostActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
     >
@@ -145,31 +178,35 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-export const PostCreate = ({ ...props }) => (
+const getDefaultDate = () => new Date();
+
+const validate = values => {
+    const errors = {};
+    ['title', 'teaser'].forEach(field => {
+        if (!values[field]) {
+            errors[field] = ['Required field'];
+        }
+    });
+
+    if (values.average_note < 0 || values.average_note > 5) {
+        errors.average_note = ['Should be between 0 and 5'];
+    }
+
+    return errors;
+};
+
+export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm
             toolbar={<PostCreateToolbar />}
             defaultValue={{ average_note: 0 }}
-            validate={values => {
-                const errors = {};
-                ['title', 'teaser'].forEach(field => {
-                    if (!values[field]) {
-                        errors[field] = ['Required field'];
-                    }
-                });
-
-                if (values.average_note < 0 || values.average_note > 5) {
-                    errors.average_note = ['Should be between 0 and 5'];
-                }
-
-                return errors;
-            }}
+            validate={validate}
         >
             <TextInput source="title" />
             <TextInput source="password" type="password" />
             <TextInput source="teaser" options={{ multiLine: true }} />
             <RichTextInput source="body" />
-            <DateInput source="published_at" defaultValue={() => new Date()} />
+            <DateInput source="published_at" defaultValue={getDefaultDate} />
             <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
@@ -177,8 +214,9 @@ export const PostCreate = ({ ...props }) => (
 );
 
 const emptyKeycode = [];
+const validateAverageNote = [required, number, minValue(0)];
 
-export const PostEdit = ({ ...props }) => (
+export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
@@ -225,7 +263,7 @@ export const PostEdit = ({ ...props }) => (
                 />
                 <NumberInput
                     source="average_note"
-                    validate={[required, number, minValue(0)]}
+                    validate={validateAverageNote}
                 />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
@@ -248,7 +286,7 @@ export const PostEdit = ({ ...props }) => (
     </Edit>
 );
 
-export const PostShow = ({ ...props }) => (
+export const PostShow = props => (
     <Show title={<PostTitle />} {...props}>
         <TabbedShowLayout>
             <Tab label="post.form.summary">
