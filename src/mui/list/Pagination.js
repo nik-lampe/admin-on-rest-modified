@@ -9,6 +9,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import withWidth from 'material-ui/utils/withWidth';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import compose from 'recompose/compose';
+import { lightBlack } from 'material-ui/styles/colors'
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -17,6 +18,7 @@ const styles = {
     },
     pageInfo: {
         padding: '1.2em',
+        color: lightBlack,
     },
     mobileToolbar: {
         margin: 'auto',
