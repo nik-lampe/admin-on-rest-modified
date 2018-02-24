@@ -8,6 +8,9 @@ import ContentSort from 'material-ui/svg-icons/content/sort';
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
+    labelStyle: {
+        textTransform: 'capitalize',
+    },
     sortButton: {
         minWidth: 40,
     },
@@ -17,7 +20,7 @@ const styles = {
         paddingRight: 16,
         verticalAlign: 'middle',
         letterSpacing: 0,
-        textTransform: 'uppercase',
+        textTransform: 'capitalize',
         fontWeight: 500,
         fontSize: 14,
     },
@@ -43,6 +46,7 @@ export const DatagridHeaderCell = ({
                     labelPosition="before"
                     onClick={updateSort}
                     data-sort={field.props.source}
+                    labelStyle={styles.labelStyle}
                     label={
                         <FieldTitle
                             label={field.props.label}
