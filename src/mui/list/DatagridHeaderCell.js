@@ -5,14 +5,16 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import { TableHeaderColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
+import { lightBlack, minBlack } from 'material-ui/styles/colors';
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
     labelStyle: {
-        textTransform: 'capitalize',
+        textTransform: 'none',
     },
     sortButton: {
         minWidth: 40,
+        color: lightBlack,
     },
     nonSortableLabel: {
         position: 'relative',
@@ -20,9 +22,10 @@ const styles = {
         paddingRight: 16,
         verticalAlign: 'middle',
         letterSpacing: 0,
-        textTransform: 'capitalize',
+        textTransform: 'none',
         fontWeight: 500,
         fontSize: 14,
+        color: minBlack,
     },
 };
 
