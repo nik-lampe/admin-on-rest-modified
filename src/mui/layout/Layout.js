@@ -57,9 +57,6 @@ const prefixedStyles = {};
 
 class Layout extends Component {
     componentWillMount() {
-        if (this.props.width !== 1) {
-            this.props.setSidebarVisibility(true);
-        }
     }
 
     render() {

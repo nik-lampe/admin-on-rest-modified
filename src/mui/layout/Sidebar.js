@@ -39,31 +39,17 @@ class Sidebar extends PureComponent {
 
     render() {
         const { open, setSidebarVisibility, children, muiTheme } = this.props;
-        const styles = getStyles(muiTheme);
 
         return (
-            <Responsive
-                small={
-                    <Drawer
-                        docked={false}
-                        open={open}
-                        onRequestChange={setSidebarVisibility}
-                    >
-                        {React.cloneElement(children, {
-                            onMenuTap: this.handleClose,
-                        })}
-                    </Drawer>
-                }
-                medium={
-                    <Paper
-                        style={open ? styles.sidebarOpen : styles.sidebarClosed}
-                    >
-                        {React.cloneElement(children, {
-                            onMenuTap: () => null,
-                        })}
-                    </Paper>
-                }
-            />
+            <Drawer
+                docked={false}
+                open={open}
+                onRequestChange={setSidebarVisibility}
+            >
+                {React.cloneElement(children, {
+                    onMenuTap: this.handleClose,
+                })}
+            </Drawer>
         );
     }
 }
