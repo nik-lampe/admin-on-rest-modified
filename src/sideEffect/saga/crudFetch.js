@@ -16,8 +16,11 @@ import {
 
 const crudFetch = restClient => {
     function* handleFetch(action) {
-
-        const { type, payload, meta: { fetch: fetchMeta, cancelPrevious, ...meta } } = action;
+        const {
+            type,
+            payload,
+            meta: { fetch: fetchMeta, cancelPrevious, ...meta },
+        } = action;
         const restType = fetchMeta;
         if (cancelPrevious) {
             yield call(delay, 500);

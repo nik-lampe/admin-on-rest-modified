@@ -13,11 +13,15 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
+import { darkBlack } from 'material-ui/styles/colors';
 
 const getStyles = theme => ({
     form: { padding: '0 1em 3em 1em' },
     // TODO: The color will be taken from another property in MUI 0.19 and later
     errorTabButton: { color: theme.textField.errorColor },
+    tabButton: {
+        color: theme.palette.primary1Color,
+    },
 });
 
 export class TabbedForm extends Component {
@@ -60,6 +64,10 @@ export class TabbedForm extends Component {
                         value={this.state.value}
                         onChange={this.handleChange}
                         contentContainerStyle={contentContainerStyle}
+                        tabItemContainerStyle={{ backgroundColor: 'white' }}
+                        inkBarStyle={{
+                            backgroundColor: muiTheme.palette.primary1Color,
+                        }}
                     >
                         {React.Children.map(
                             children,
@@ -78,7 +86,9 @@ export class TabbedForm extends Component {
                                                 tab.props.label
                                             ) && this.state.value !== index ? (
                                                 styles.errorTabButton
-                                            ) : null
+                                            ) : (
+                                                styles.tabButton
+                                            )
                                         }
                                     >
                                         {React.cloneElement(tab, {

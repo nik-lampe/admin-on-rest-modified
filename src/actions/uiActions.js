@@ -1,6 +1,5 @@
 export const TOGGLE_SIDEBAR = 'AOR/TOGGLE_SIDEBAR';
 
-
 export const toggleSidebar = () => ({
     type: TOGGLE_SIDEBAR,
 });
@@ -20,6 +19,6 @@ export const refreshView = () => ({
 
 export const SET_THEME = 'AOR/SET_THEME';
 export const setTheme = theme => ({
-	type: SET_THEME,
-	payload: theme,
-})
+    type: SET_THEME,
+    payload: theme,
+});

@@ -28,8 +28,8 @@ export default (previousState = defaultState, { type, payload }) => {
         case SET_THEME:
             return {
                 ...previousState,
-                theme: payload
-            }
+                theme: payload,
+            };
         default:
             return previousState;
     }

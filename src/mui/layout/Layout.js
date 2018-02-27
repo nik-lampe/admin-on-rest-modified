@@ -56,8 +56,7 @@ const styles = {
 const prefixedStyles = {};
 
 class Layout extends Component {
-    componentWillMount() {
-    }
+    componentWillMount() {}
 
     render() {
         const {
@@ -161,7 +160,7 @@ Layout.defaultProps = {
 function mapStateToProps(state) {
     return {
         isLoading: state.admin.loading > 0,
-        connectedTheme: state.admin.ui.theme
+        connectedTheme: state.admin.ui.theme,
     };
 }
 
