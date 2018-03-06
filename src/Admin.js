@@ -17,6 +17,7 @@ import Menu from './mui/layout/Menu';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
 import AdminRoutes from './AdminRoutes';
+import reduxFormFixMiddleware from './reducer/reduxFormFixMiddleware'
 
 const Admin = ({
     appLayout,
@@ -50,7 +51,7 @@ const Admin = ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
+            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory), reduxFormFixMiddleware),
             typeof window !== 'undefined' && window.devToolsExtension
                 ? window.devToolsExtension()
                 : f => f
