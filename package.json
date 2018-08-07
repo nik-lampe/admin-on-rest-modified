@@ -46,8 +46,8 @@
         "prettier": "~1.6.0",
         "prettier-eslint-cli": "~4.4.0",
         "react": "~15.6.1",
-        "react-dom": "~15.6.1",
         "react-addons-test-utils": "~15.6.0",
+        "react-dom": "~15.6.1",
         "react-test-renderer": "~15.6.1",
         "selenium-webdriver": "~3.5.0",
         "sinon": "~3.2.1"
@@ -58,6 +58,7 @@
     },
     "dependencies": {
         "babel-runtime": "~6.26.0",
+        "filesize": "^3.6.1",
         "inflection": "~1.12.0",
         "lodash.debounce": "~4.0.8",
         "lodash.defaultsdeep": "~4.6.0",

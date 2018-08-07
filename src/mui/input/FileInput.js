@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { shallowEqual } from "recompose";
 import Dropzone from "react-dropzone";
+import filesize from "filesize";
 
 import FileInputPreview from "./FileInputPreview";
 import translate from "../../i18n/translate";
@@ -137,6 +138,7 @@ export class FileInput extends Component {
       minSize,
       multiple,
       style,
+      translate,
       removeStyle
     } = this.props;
 
@@ -158,6 +160,10 @@ export class FileInput extends Component {
           style={finalStyle.dropZone}
         >
           {this.label()}
+          {maxSize &&
+            translate("aor.input.file.max_size", {
+              maxSize: filesize(maxSize)
+            })}
         </Dropzone>
         {children && (
           <div className="previews">
